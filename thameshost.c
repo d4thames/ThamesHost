@@ -57,45 +57,45 @@ int main(void)
 				switch (control_code) {
 					// Remote Control Input					
 					case S_THROTTLE:
-						mvprintw( 3, TEXT_OFFSET, "Throttle %d", input_data/31);
+						mvprintw( 3, TEXT_OFFSET, "Throttle %f", input_data/31);
 						clrtoeol();
 						break;
 					case S_YAW:
-						mvprintw( 4, TEXT_OFFSET, "Yaw      %d", input_data/31);
+						mvprintw( 4, TEXT_OFFSET, "Yaw      %f", input_data/31);
 						clrtoeol();
 						break;
 					case S_PITCH:
-						mvprintw( 5, TEXT_OFFSET, "Pitch    %d", input_data/31);
+						mvprintw( 5, TEXT_OFFSET, "Pitch    %f", input_data/31);
 						clrtoeol();
 						break;
 					case S_ROLL:
-						mvprintw( 6, TEXT_OFFSET, "Roll     %d", input_data/31);
+						mvprintw( 6, TEXT_OFFSET, "Roll     %f", input_data/31);
 						clrtoeol();
 						break;
 					// Linear Acceleration
 					case S_LINX:
-						mvprintw( 9, TEXT_OFFSET, "lX %d", input_data/15);
+						mvprintw( 9, TEXT_OFFSET, "lX %f", input_data/15);
 						clrtoeol();
 						break;
 					case S_LINY:
-						mvprintw(10, TEXT_OFFSET, "lY %d", input_data/15);
+						mvprintw(10, TEXT_OFFSET, "lY %f", input_data/15);
 						clrtoeol();
 						break;
 					case S_LINZ:
-						mvprintw(11, TEXT_OFFSET, "lZ %d", input_data/15);
+						mvprintw(11, TEXT_OFFSET, "lZ %f", input_data/15);
 						clrtoeol();
 						break; 
 					// Angular Acceleration
 					case S_ANGX:
-						mvprintw(14, TEXT_OFFSET, "aX %d", input_data/15);
+						mvprintw(14, TEXT_OFFSET, "aX %f", input_data/15);
 						clrtoeol();
 						break;
 					case S_ANGY:
-						mvprintw(15, TEXT_OFFSET, "aY %d", input_data/15);
+						mvprintw(15, TEXT_OFFSET, "aY %f", input_data/15);
 						clrtoeol();
 						break;
 					case S_ANGZ:
-						mvprintw(16, TEXT_OFFSET, "aZ %d", input_data/15);
+						mvprintw(16, TEXT_OFFSET, "aZ %f", input_data/15);
 						clrtoeol();
 						break; 					
 					// Start/Stop Signals
@@ -118,10 +118,14 @@ int main(void)
 				}
 				break;
 			case tuneing:
+				mvprintw(18, TEXT_OFFSET, "E Tuning not yet implemented.");
+				clrtoeol();
+				mode = telemetry;
 				break;
 		}
 		refresh();
-		usleep(1000);
+		usleep(1000000);
+		// sleep(0.5);
 	}
 
 	return 0; // Unreachable

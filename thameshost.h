@@ -8,7 +8,7 @@
 		#include <unistd.h>
 		#include "tel-comms-spec.h"
 
-		#define PORT_LOCATION "testfile.hex"
+		#define PORT_LOCATION "/dev/random"
 
 		#define TEXT_OFFSET 1
 	
@@ -16,7 +16,7 @@
 
 		char input_byte;
 		int control_code;
-		int input_data;
+		float input_data;
 
 		void initialise_screen(void);
 		int main(void);
