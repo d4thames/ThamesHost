@@ -8,6 +8,47 @@ void initialise_screen(void)
 	nodelay(stdscr, TRUE);
 }
 
+PID* write
+
+void write_base_tun(void)
+{
+	clear();
+	attron(A_BOLD);
+	mvprintw( 0, TEXT_OFFSET, "Tuning System.");
+	mvprintw( 1, TEXT_OFFSET, "Flight not available while tuning.");
+	attroff(A_BOLD);
+	mvprintw( 3, TEXT_OFFSET, "p - Edit Pitch System");
+	mvprintw( 4, TEXT_OFFSET, "r - Edit Roll System");
+	mvprintw( 5, TEXT_OFFSET, "y - Edit Yaw System");
+}
+
+void write_base_tel(void)
+{
+	clear();
+	attron(A_BOLD);
+	mvprintw( 0, TEXT_OFFSET, "Telemetry System");
+	attroff(A_BOLD);
+	attron(A_UNDERLINE);
+	mvprintw( 2, TEXT_OFFSET, "Remote Control Inputs");
+	attroff(A_UNDERLINE);
+	mvprintw( 3, TEXT_OFFSET, "Throttle --------");
+	mvprintw( 4, TEXT_OFFSET, "Yaw      --------");
+	mvprintw( 5, TEXT_OFFSET, "Pitch    --------");
+	mvprintw( 6, TEXT_OFFSET, "Roll     --------");
+	attron(A_UNDERLINE);
+	mvprintw( 8, TEXT_OFFSET, "Linear Acceleration");
+	attroff(A_UNDERLINE);
+	mvprintw( 9, TEXT_OFFSET, "lX --------");
+	mvprintw(10, TEXT_OFFSET, "lY --------");
+	mvprintw(11, TEXT_OFFSET, "lZ --------");
+	attron(A_UNDERLINE);
+	mvprintw(13, TEXT_OFFSET, "Angular Acceleration");
+	attroff(A_UNDERLINE);
+	mvprintw(14, TEXT_OFFSET, "aX --------");
+	mvprintw(15, TEXT_OFFSET, "aY --------");
+	mvprintw(16, TEXT_OFFSET, "aZ --------");
+}
+
 int main(void)
 {
 	// Open File, Initialise System
@@ -16,28 +57,7 @@ int main(void)
 
 	// Initialise Screen
 	initialise_screen();
-	attron(A_BOLD);
-	mvprintw( 0, TEXT_OFFSET, "D4 Thames Telemetry and Debugging System");
-	attroff(A_BOLD);
-	attron(A_UNDERLINE);
-	mvprintw( 2, TEXT_OFFSET, "Remote Control Inputs");
-	attroff(A_UNDERLINE);
-	mvprintw( 3, TEXT_OFFSET, "Throttle NA");
-	mvprintw( 4, TEXT_OFFSET, "Yaw      NA");
-	mvprintw( 5, TEXT_OFFSET, "Pitch    NA");
-	mvprintw( 6, TEXT_OFFSET, "Roll     NA");
-	attron(A_UNDERLINE);
-	mvprintw( 8, TEXT_OFFSET, "Linear Acceleration");
-	attroff(A_UNDERLINE);
-	mvprintw( 9, TEXT_OFFSET, "lX NA");
-	mvprintw(10, TEXT_OFFSET, "lY NA");
-	mvprintw(11, TEXT_OFFSET, "lZ NA");
-	attron(A_UNDERLINE);
-	mvprintw(13, TEXT_OFFSET, "Angular Acceleration");
-	attroff(A_UNDERLINE);
-	mvprintw(14, TEXT_OFFSET, "aX NA");
-	mvprintw(15, TEXT_OFFSET, "aY NA");
-	mvprintw(16, TEXT_OFFSET, "aZ NA");
+	write_base_tel();
 
 	while (1) {
 		// Read from file
@@ -108,8 +128,9 @@ int main(void)
 						// Flight has stopped
 						// Change to tuning mode
 						mvprintw(18, TEXT_OFFSET, "M Flight Stopped, changing to tuning mode.");
-						mode = tuneing;
+						mode = tuning;
 						clrtoeol();
+						write_base_tun();
 						break;
 					default:
 						mvprintw(18, TEXT_OFFSET, "E Unexpected symbol received (%d).", input_byte);
@@ -117,16 +138,31 @@ int main(void)
 						break;
 				}
 				break;
-			case tuneing:
-				mvprintw(18, TEXT_OFFSET, "E Tuning not yet implemented.");
-				clrtoeol();
-				mode = telemetry;
+			case tuning:
+				ui_input = wgetch(stdscr);
+				switch (ui_input) {
+					case 'q':
+						// Quit Tuning Mode
+						// TODO Send End Symbol
+						write_base_tel();
+						mode = telemetry;
+						break;
+					case 'p':
+						// Set p coefficient
+						break;
+					case 'r':
+						// Set i coefficient
+						break;
+					case 'y':
+						// Set i error threshold.
+						break; 
+					default:
+						break;
+				}
 				break;
 		}
 		refresh();
 		usleep(1000000);
-		// sleep(0.5);
 	}
-
 	return 0; // Unreachable
 }

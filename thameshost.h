@@ -12,9 +12,13 @@
 
 		#define TEXT_OFFSET 1
 	
-		enum {telemetry, tuneing} mode;
+		typedef struct {
+			double p, i, d;
+		} PID;
 
-		char input_byte;
+		enum {telemetry, tuning} mode;
+
+		char input_byte, ui_input;
 		int control_code;
 		float input_data;
 
